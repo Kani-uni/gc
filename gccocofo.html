@@ -1,0 +1,447 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("jquery", "1.2");</script>
+    <meta http-equiv="Content-Type" content="text/javascript; charset=UTF-8">
+  </head>
+
+<body>
+    <script type="text/javascript">
+
+
+    function tekiyou(){
+    var CURL = document.getElementById('C_URL').value;
+    var URL = "http://charasheet.vampire-blood.net/" + CURL +".js?callback=jsonp";
+    var script = document.createElement( 'script' );
+    script.type = 'text/javascript';
+    script.src = URL;
+    document.body.appendChild(script);
+    //script.onload=function(){tekiyou2()};
+    //var firstScript = document.getElementsByTagName( 'script' )[ 0 ];
+    //firstScript.parentNode.insertBefore( script, firstScript );
+    };
+    var jsonp = function(data) {
+      GC = data;
+      calcData();
+    }
+    var checkDuplicate = function(array, str){
+      for(var i =0; i < array.length; i++){
+          if(str == array[i]){
+              return true;
+          }
+      }
+      return false;
+    };
+    function decode(intxt){
+      intxt = intxt.replace(/&amp;/g,"&").replace(/&lt;/g,"〈").replace(/&gt;/g,"〉").replace(/&larr;/g,"←").replace(/&uarr;/g,"↑").replace(/&rarr;/g,"→").replace(/&darr;/g,"↓").replace(/&times;/g,"×").replace(/&quot;/g,"\”").replace(/&divide;/g,"÷");
+      return intxt;
+    }
+    
+    var hit_param = ["{格闘判定}", "{力技判定}", "{重武器判定}", "{軽武器判定}", "{騎乗判定}", "{射撃判定}", "{知覚判定}", "{霊感判定}", "{治療判定}", "{混沌知識判定}", "{意志判定}", "{聖印判定}", "{感性判定}"];
+    var status_name = ["筋力", "反射", "感覚", "知力", "精神", "共感"];
+
+    function tekiyou2(){
+      acts = "●アクション\\n";
+      evades = "●回避\\n";
+      effect = "☆特技\\n";
+      magic = "★魔法\\n";
+      item = "●持ち物\\n";
+      var efe_tim = [];
+      var mgi_tim = [];
+      var hit_param_name = ["格闘", "力技", "重武器", "軽武器", "騎乗", "射撃", "知覚", "霊感", "治療", "混沌知識", "意志", "聖印", "感性"];
+      var eva_param_name = ["回避", "格闘", "重武器", "軽武器", "隠密", "騎乗", "射撃", "知覚", "霊感", "治療", "混沌知識", "意志", "聖印", "感性"];
+      var eva_param = ["{回避判定}", "{格闘判定}", "{重武器判定}", "{軽武器判定}", "{隠密判定}", "{騎乗判定}", "{射撃判定}", "{知覚判定}", "{霊感判定}", "{治療判定}", "{混沌知識判定}", "{意志判定}", "{聖印判定}", "{感性判定}"];
+      var act_h = GC.acts_hit_param
+      var eva_h = GC.evades_hit_param    
+      for(var i = 0;i < GC.effect_timing.length;i++){
+        if( !checkDuplicate(efe_tim, GC.effect_timing[i]) ){
+          efe_tim.push(GC.effect_timing[i]);
+        }
+      }
+      for(var i = 0;i < GC.magic_timing.length;i++){
+        if( !checkDuplicate(mgi_tim, GC.magic_timing[i]) ){
+          mgi_tim.push(GC.magic_timing[i]);
+        }
+      }
+      for (var j = 0;j< efe_tim.length;j++){
+        if(efe_tim[j] != "") effect += "○" + efe_tim[j] + "\\n";
+        for(var i = 0;i < GC.effect_name.length;i++){
+          if((GC.effect_name[i] == "")||(GC.effect_timing[i] != efe_tim[j])||(efe_tim[j] == "")){
+            continue;
+          }
+          var effect_total = "▼" + GC.effect_name[i] + "\_SL:" + GC.effect_lv[i];
+          if(GC.effect_timing[i] != ""){
+            effect_total += "\_タイミング:" + GC.effect_timing[i];
+          }
+          if(GC.effect_hantei[i] != ""){
+            effect_total += "\_判定:" + GC.effect_hantei[i];
+          }
+          if(GC.effect_taisho[i] != ""){
+            effect_total += "\_対象:" + GC.effect_taisho[i];
+          }
+          if(GC.effect_range[i] != ""){
+            effect_total += "\_射程:" + GC.effect_range[i];
+          }
+          if(GC.effect_cost[i] != ""){
+            effect_total += "\_コスト:" + GC.effect_cost[i];
+          }
+          if(GC.effect_mc[i] == ""){
+            effect_total += "\_MC：○";
+          }else if(GC.effect_mc[i] == "&times;"){
+            effect_total += "\_MC：×";
+          }else{
+            effect_total += "\_MC：" + GC.effect_mc[i];
+          }
+          if(GC.effect_memo[i] != ""){
+            effect_total += "\_効果:" + decode(GC.effect_memo[i]);
+          }
+          if(GC.effect_hantei[i] != ""){
+            effect_total +=  "{"  + GC.effect_hantei[i] + "判定}>=0　命中";
+          }
+          effect_total += "\\n"
+          effect += effect_total;
+        }
+      }
+      for (var j = 0;j< mgi_tim.length;j++){
+        if(mgi_tim[j] != "") magic += "○" + mgi_tim[j] + "\\n";
+        for(var i = 0;i < GC.magic_name.length;i++){
+          if((GC.magic_name[i] == "")||(GC.magic_timing[i] != mgi_tim[j])||(mgi_tim[j] == "")){
+            continue;
+          }
+          var magic_total = "▼" + GC.magic_name[i];
+          if(GC.magic_timing[i] != ""){
+            magic_total += "\_タイミング:" + GC.magic_timing[i];
+          }
+          if(GC.magic_hantei[i] != ""){
+            magic_total += "\_判定:" + GC.magic_hantei[i];
+          }
+          if(GC.magic_page[i] != ""){
+            magic_total += "\_目標:" + GC.magic_page[i];
+          }
+          if(GC.magic_taisho[i] != ""){
+            magic_total += "\_対象:" + GC.magic_taisho[i];
+          }
+          if(GC.magic_range[i] != ""){
+            magic_total += "\_射程:" + GC.magic_range[i];
+          }
+          if(GC.magic_cost[i] != ""){
+            magic_total += "\_コスト:" + GC.magic_cost[i];
+          }
+          if(GC.magic_limit[i] != ""){
+            magic_total += "\_制限:" + GC.magic_limit[i];
+          }
+          if(GC.magic_mc[i] == ""){
+            magic_total += "\_MC：○";
+          }else{
+            magic_total += "\_MC：" + GC.magic_mc[i];
+          }
+          if(GC.magic_memo[i] != ""){
+            magic_total += "\_効果:" + decode(GC.magic_memo[i]);
+          }
+          if(GC.magic_hantei[i] != ""){
+            magic_total += "{" + GC.magic_hantei[i] + "判定}>=" + magic_page[i] + "  命中";
+          }
+          magic_total += "\\n"
+          magic += magic_total;
+        }
+      }
+      for(var i = 0;i < GC.acts_name.length;i++){
+          if((GC.acts_name[i] == "")){
+            continue;
+          }
+          var acts_total = "▼" + GC.acts_name[i];
+          if(GC.acts_hit_param[i] != ""){
+            acts_total += "\_判定:" + hit_param_name[act_h];
+          }
+          if(GC.acts_range[i] != ""){
+            acts_total += "\_射程:" + GC.acts_range[i];
+          }
+          if(GC.acts_cost[i] != ""){
+            acts_total += "\_コスト:" + GC.acts_cost[i];
+          }
+          if(GC.acts_mc[i] == ""){
+            acts_total += "\_MC：○";
+          }else if(GC.acts_mc[i] == "&times;"){
+            acts_total += "\_MC：×";
+          }else{
+            acts_total += "\_MC：" + GC.acts_mc[i];
+          }
+          if(GC.acts_sonota[i] != ""){
+            acts_total += "\_効果:" + decode(GC.acts_sonota[i]);
+          }
+          acts_total += "\\n" + hit_param[act_h] + "+" + GC.acts_hit_dice_mod[i] +"d\+" + GC.acts_hit_status + GC.acts_hit_mod + "=>0　命中判定\\n"
+          if(GC.acts_power[i] != ""){
+            acts_total += decode(GC.acts_power[i]) + "　攻撃";
+          }
+          acts_total += "\\n"
+          acts += acts_total;
+        }
+        for(var i = 0;i < GC.evades_name.length;i++){
+          if((GC.evades_name[i] == "")){
+            continue;
+          }
+          var evades_total = "▼" + GC.evades_name[i];
+          if(GC.evades_hit_param[i] != ""){
+            evades_total += "\_判定:" + eva_param_name[eva_h];
+          }
+          if(GC.evades_cost[i] != ""){
+            evades_total += "\_コスト:" + GC.evades_cost[i];
+          }
+          if(GC.evades_mc[i] == ""){
+            evades_total += "\_MC：○";
+          }else if(GC.evades_mc[i] == "&times;"){
+            evades_total += "\_MC：×";
+          }else{
+            evades_total += "\_MC：" + GC.evades_mc[i];
+          }
+          if(GC.evades_sonota[i] != ""){
+            evades_total += "\_効果:" + decode(GC.evades_sonota[i]);
+          }
+          evades_total += "\\n" + eva_param[eva_h] + "+" + GC.evades_hit_dice_mod[i] +"d\+" + GC.evades_hit_status + GC.evades_hit_mod + "=>0　回避判定"
+          evades_total += "\\n"
+          evades += evades_total;
+        }
+        for(var i = 0;i < GC.item_name.length;i++){
+        var item_total = "・" + GC.item_name[i];
+        if(GC.item_num[i] != ""){
+            item_total += "（" + GC.item_num[i] + "）";
+          }
+        }
+      }
+    
+
+  function calcData(){
+    tekiyou2();
+    var ad_str = parseInt(document.getElementById('ad_str').value);
+    var ad_ref = parseInt(document.getElementById('ad_ref').value);
+    var ad_sen = parseInt(document.getElementById('ad_sen').value);
+    var ad_int = parseInt(document.getElementById('ad_int').value);
+    var ad_spi = parseInt(document.getElementById('ad_spi').value);
+    var ad_emp = parseInt(document.getElementById('ad_emp').value);
+    //追加分
+    var ad_dmg = parseInt(document.getElementById('ad_dmg').value);
+    var ad_hit = parseInt(document.getElementById('ad_hit').value);
+    var atk_skill = parseInt(document.getElementById('atk_skill').value);
+    var atk_hit_status = parseInt(document.getElementById('atk_hit_status').value);
+    //ここまで
+    var wep = parseInt(document.getElementById('wep').value);
+    var fir = parseInt(document.getElementById('fir').value);
+    var sho = parseInt(document.getElementById('sho').value);
+    var dir = parseInt(document.getElementById('dir').value);
+    skill_total = [];
+    for (var i = 0; i < GC.skill_total.length; i++) {
+      skill_total[i] = GC.skill_total[i];
+    };
+    for(var i =0; i < 5; i++){
+      if(ad_str != 0) skill_total[i] = GC.skill_total[i];// + "+" + ad_str;
+      if(ad_ref != 0) skill_total[i+5] = GC.skill_total[i+5];// + "+" + ad_ref;
+      //if(ad_sen != 0) GC.skill_total[i+10] += "+" + ad_sen;
+      if(ad_int != 0) skill_total[i+14] = GC.skill_total[i+14];// + "+" + ad_int;
+      //if(ad_spi != 0) GC.skill_total[i] += "+" + ad_spi;
+    }
+    for(var i =0; i < 4; i++){
+      if(ad_sen != 0) skill_total[i+10] = GC.skill_total[i+10];// + "+" + ad_sen;
+      if(ad_emp != 0) skill_total[i+21] = GC.skill_total[i+21];// + "+" + ad_emp;
+    }
+    if(ad_spi != 0) {
+      skill_total[19] = GC.skill_total[19];// + "+" + ad_spi;
+      skill_total[20] = GC.skill_total[20];// + "+" + ad_spi;
+    }
+    var add_str = (ad_str != 0) ? "+" + ad_str : "";
+    var add_ref = (ad_ref != 0) ? "+" + ad_ref : "";
+    var add_int = (ad_int != 0) ? "+" + ad_int : "";
+    var add_sen = (ad_sen != 0) ? "+" + ad_sen : "";
+    var add_emp = (ad_emp != 0) ? "+" + ad_emp : "";
+    var add_spi = (ad_spi != 0) ? "+" + ad_spi : "";
+    //追加分
+    var add_dmg = (ad_dmg != 0) ? + ad_dmg : "";
+    var add_hit = (ad_hit != 0) ? + ad_hit : "";
+
+    var outdata =
+    "{\"kind\": \"character\",\"data\": {\"name\": \""
+    + GC.pc_name + 
+    "\",\"initiative\": \""
+    + GC.armer_total_act + 
+    "\",\"memo\": \"\",\"status\": [{\"label\": \"HP\",\"value\": \""
+    + GC.NP7 +
+    "\",\"max\": \""
+    + GC.NP7 +
+    "\"},{\"label\": \"MP\",\"value\": \""
+    + GC.NP8 + 
+    "\",\"max\": \""
+    + GC.NP8 + 
+    "\"},{\"label\": \"天運\",\"value\": 3,\"max\": 6},{\"label\": \"移動力\",\"value\": \""
+    + GC.armer_move_sq +
+    "\",\"max\" : \""
+    + GC.armer_move_sq +
+    "\"}],\"commands\":\"回避\\n" 
+    +
+"{回避判定}+{装備回避補正値}=>0 回避判定\\n" + "\\n" +
+
+"命中\\n" +
+hit_param[atk_skill] + "+{武器命中修正}=>0  《基本武器攻撃》命中/回避\\n" + "\\n" +
+"ダメージロール\\n" +
+"2d+{【" + status_name[atk_hit_status] +"】}+{武器ダメージ} 《基本武器攻撃》ダメージ/武器\\n" + "\\n" +
+"被ダメ計算用\\n" +
+"C(0-{武器}) 被ダメージ=武器ダメージ-武器防御\\n" +
+"C(0-{武器}-{ガード値}) 被ダメージ=武器ダメージ-武器防御-ガード値\\n" +
+"C(0-{炎熱}) 被ダメージ=炎熱ダメージ-炎熱防御\\n" +
+"C(0-{衝撃}) 被ダメージ=衝撃ダメージ-衝撃防御\\n" +
+"C(0-{体内}) 被ダメージ=体内ダメージ-体内防御\\n" + "\\n" + "\\n" +
+"特技・魔法一覧\\n" +
+acts + "\\n\\n" +
+evades + "\\n\\n" +
+effect + "\\n\\n" +
+magic + "\\n\\n" +
+"{格闘判定}" + add_str + "=>0 格闘判定\\n" +
+"{力技判定}" + add_str + "=>0 力技判定\\n" +
+"{重武器判定}" + add_str + "=>0 重武器判定\\n" +
+"{水泳判定}" + add_str + "=>0 水泳判定\\n" +
+"{頑健判定}" + add_str + "=>0 頑健判定\\n" +
+"{軽武器判定}" + add_ref + "=>0 軽武器判定\\n" +
+"{運動判定}" + add_ref + "=>0 運動判定\\n" +
+"{隠密判定}" + add_ref + "=>0 隠密判定\\n" +
+"{回避判定}" + add_ref + "=>0 回避判定\\n" +
+"{騎乗判定}" + add_ref + "=>0 騎乗判定\\n" +
+"{射撃判定}" + add_sen + "=>0 射撃判定\\n" +
+"{手業判定}" + add_sen + "=>0 手業判定\\n" +
+"{知覚判定}" + add_sen + "=>0 知覚判定\\n" +
+"{霊感判定}" + add_sen + "=>0 霊感判定\\n" +
+"{治療判定}" + add_int + "=>0 治療判定\\n" +
+"{混沌知識判定}" + add_int + "=>0 混沌知識判定\\n" +
+"{聖印知識判定}" + add_int + "=>0 聖印知識判定\\n" +
+"{軍略知識判定}" + add_int + "=>0 軍略知識判定\\n" +
+"{専門知識判定}" + add_int + "=>0 専門知識判定\\n" +
+"{意志判定}" + add_spi + "=>0 意志判定\\n" +
+"{聖印判定}" + add_spi + "=>0 聖印判定\\n" +
+"{話術判定}" + add_emp + "=>0 話術判定\\n" +
+"{感性判定}" + add_emp + "=>0 感性判定\\n" +
+"{情報収集判定}" + add_emp + "=>0 情報収集判定\\n" +
+"{芸術判定}" + add_emp + "=>0 芸術判定\\n" + "\\n" + "\\n" +
+
+  "//武器=" + GC.armer_total_defA + "\\n" +
+  "//炎熱=" + GC.armer_total_defB + "\\n" +
+  "//衝撃=" + GC.armer_total_defC + "\\n" +
+  "//体内=" + GC.armer_total_defD + "\\n" +
+  "//【筋力】=" + GC.NB1 + "\\n" +
+  "//【反射】=" + GC.NB2 + "\\n" +
+  "//【感覚】=" + GC.NB3 + "\\n" +
+  "//【知力】=" + GC.NB4 + "\\n" +
+  "//【精神】=" + GC.NB5 + "\\n" +
+  "//【共感】=" + GC.NB6 + "\\n" +
+  "//【筋力基本値】=" + GC.NP1 + "\\n" +
+  "//【反射基本値】=" + GC.NP2 + "\\n" +
+  "//【感覚基本値】=" + GC.NP3 + "\\n" +
+  "//【知力基本値】=" + GC.NP4 + "\\n" +
+  "//【精神基本値】=" + GC.NP5 + "\\n" +
+  "//【共感基本値】=" + GC.NP6 + "\\n" +
+  "//ガード値=" + GC.guard_level_sum + "\\n" +"\\n" +
+  
+  "//装備回避補正値=" + GC.armer_total_dodge + "\\n" +
+  "//武器重量="  + GC.arms_price_sum + "\\n" +
+  "//武器命中修正=" + add_hit + "\\n" +
+  "//武器ダメージ=" + add_dmg + "\\n" +"\\n" +
+
+  "//格闘判定=" + skill_total[0] +"\\n" +
+  "//力技判定=" + skill_total[1]+"\\n" +
+  "//重武器判定=" + skill_total[2]+"\\n" +
+  "//水泳判定=" + skill_total[3]+"\\n" +
+  "//頑健判定=" + skill_total[4]+"\\n" +
+  "//軽武器判定=" + skill_total[5]+"\\n" +
+  "//運動判定=" + skill_total[6]+"\\n" +
+  "//隠密判定=" + skill_total[7]+"\\n" +
+  "//回避判定=" + skill_total[8]+"\\n" +
+  "//騎乗判定=" + skill_total[9]+"\\n" +
+  "//射撃判定=" + skill_total[10]+"\\n" +
+  "//手業判定=" + skill_total[11]+"\\n" +
+  "//知覚判定=" + skill_total[12]+"\\n" +
+  "//霊感判定=" + skill_total[13]+"\\n" +
+  "//治療判定=" + skill_total[14]+"\\n" +
+  "//混沌知識判定=" + skill_total[15]+"\\n" +
+  "//聖印知識判定=" + skill_total[16]+"\\n" +
+  "//軍略知識判定=" + skill_total[17]+"\\n" +
+  "//専門知識判定=" + skill_total[18]+"\\n" +
+  "//意志判定=" + skill_total[19]+"\\n" +
+  "//聖印判定=" + skill_total[20]+"\\n" +
+  "//話術判定=" + skill_total[21]+"\\n" +
+  "//感性判定=" + skill_total[22]+"\\n" +
+  "//情報収集判定=" + skill_total[23]+"\\n" +
+  "//芸術判定=" + skill_total[24] +"\"}}";
+  document.box.strbox.value = outdata;
+  effect = "";
+  magic = "";
+  for (var i = 0; i < GC.skill_total.length; i++) {
+      skill_total[i] = "";
+    };
+  };
+function TextAreaSelect(){
+	document.box.strbox.focus();
+	document.box.strbox.select();
+}
+</script>
+<h1>グラクレチャパレ（ココフォリアコピペ用）</h1>
+<form name = "box" id="box2" >
+キャラシID:<input type="text" name="c_url" id="C_URL" value="0" >&nbsp; <input type="button" name="go" value="読み込む"  onclick="tekiyou()"><br><br>
+攻撃使用技能:<select name="atk_skill" id="atk_skill" onchange="calcData();">
+  <option selected="selected" value=""></option>
+  <option value="0">格闘</option>
+  <option value="1">力技</option>
+  <option value="2">重武器</option>
+  <option value="3">軽武器</option>
+  <option value="4">騎乗</option>
+  <option value="5">射撃</option>
+  <option value="6">知覚</option>
+  <option value="7">霊感</option>
+  <option value="8">治療</option>
+  <option value="9">混沌知識</option>
+  <option value="10">意志</option>
+  <option value="11">聖印</option>
+  <option value="12">感性</option>
+  </select>&nbsp;
+攻撃使用判定値:<select name="atk_hit_status" id="atk_hit_status" onchange="calcData();">
+  <option value="0">筋力</option>
+  <option value="1">反射</option>
+  <option value="2">感覚 </option>
+  <option value="3">知力</option>
+  <option value="4">精神</option>
+  <option value="5">共感</option>
+  <option value="6">最大</option>
+  </select>&nbsp;
+武器命中修正:<input type="text" style="width:30px;" id="ad_hit" onchange="calcData();" value="0" >&nbsp;
+武器ダメージ:<input type="text" style="width:30px;" id="ad_dmg" onchange="calcData();" value="0" >&nbsp;
+<br><br>
+出力欄<br>
+<textarea name="strbox" id="strbox" rows="20" cols="100" tabindex="0" wrap="hard">
+入力なし</textarea></form>
+<input type="button" value="テキスト全選択" onClick="TextAreaSelect()"><br><br>
+<br><br>
+<div>
+部隊能力修正(0以外の時各被ダメ計算に+で追加)<br>
+筋力:<input type="text" style="width:30px;" id="ad_str" onchange="calcData();" value="0" >&nbsp;
+反射:<input type="text" style="width:30px;" id="ad_ref" onchange="calcData();" value="0" >&nbsp;
+感覚:<input type="text" style="width:30px;" id="ad_sen" onchange="calcData();" value="0" >&nbsp;
+知力:<input type="text" style="width:30px;" id="ad_int" onchange="calcData();" value="0" >&nbsp;
+精神:<input type="text" style="width:30px;" id="ad_spi" onchange="calcData();" value="0" >&nbsp;
+共感:<input type="text" style="width:30px;" id="ad_emp" onchange="calcData();" value="0" >&nbsp;
+<br>
+部隊防御力(0以外の時各被ダメ計算に-で追加)<br>
+武器:<input type="text" style="width:30px;" id="wep" onchange="calcData();" value="0" >&nbsp;
+炎熱:<input type="text" style="width:30px;" id="fir" onchange="calcData();" value="0" >&nbsp;
+衝撃:<input type="text" style="width:30px;" id="sho" onchange="calcData();" value="0" >&nbsp;
+体内:<input type="text" style="width:30px;" id="dir" onchange="calcData();" value="0" >&nbsp;
+</div>
+<br><br>
+○使い方<br>
+1.http://charasheet.vampire-blood.net/○○（英数字）←ここの○○を入力する<br>
+2.「読み込む」を押す<br>
+3.後は結果をコピーして、良いグランクレストを・・・と言いたいところなのですが諸注意<br>
+<br>
+・部隊能力と防御修正はテキストボックスからフォーカスを外した時点で出力欄に反映。（数値入力後データを再読込する必要はありません<br>
+http://unonek.sakura.ne.jp/lh/gc_cp.html
+
+<br>
+<br>
+<br>
+
+</body>
+</html>
