@@ -2,7 +2,8 @@
   <head>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">google.load("jquery", "1.2");</script>
-    <meta http-equiv="Content-Type" content="text/javascript; charset=UTF-8">
+   <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
   </head>
 
 <body>
@@ -379,7 +380,11 @@ function TextAreaSelect(){
 	document.box.strbox.select();
 }
 </script>
-<h1>グラクレチャパレ（ココフォリアコピペ用）</h1>
+<div class="container">
+  <div class="header">
+    <h1>グラクレチャパレ（ココフォリアコピペ用）</h1>
+  </div>
+  <div>
 <form name = "box" id="box2" >
 キャラシID:<input type="text" name="c_url" id="C_URL" value="0" >&nbsp; <input type="button" name="go" value="読み込む"  onclick="tekiyou()"><br><br>
 攻撃使用技能:<select name="atk_skill" id="atk_skill" onchange="calcData();">
@@ -405,7 +410,6 @@ function TextAreaSelect(){
   <option value="3">知力</option>
   <option value="4">精神</option>
   <option value="5">共感</option>
-  <option value="6">最大</option>
   </select>&nbsp;
 武器命中修正:<input type="text" style="width:30px;" id="ad_hit" onchange="calcData();" value="0" >&nbsp;
 武器ダメージ:<input type="text" style="width:30px;" id="ad_dmg" onchange="calcData();" value="0" >&nbsp;
@@ -413,7 +417,7 @@ function TextAreaSelect(){
 出力欄<br>
 <textarea name="strbox" id="strbox" rows="20" cols="100" tabindex="0" wrap="hard">
 入力なし</textarea></form>
-<input type="button" value="テキスト全選択" onClick="TextAreaSelect()"><br><br>
+<input type="button" value="テキスト全選択" onClick="TextAreaSelect()"></div>
 <br><br>
 <div>
 部隊能力修正(0以外の時各被ダメ計算に+で追加)<br>
@@ -432,15 +436,15 @@ function TextAreaSelect(){
 </div>
 <br><br>
 ○使い方<br>
-1.http://charasheet.vampire-blood.net/○○（英数字）←ここの○○を入力する<br>
-2.「読み込む」を押す<br>
-3.後は結果をコピーして、良いグランクレストを・・・と言いたいところなのですが諸注意<br>
-<br>
-・部隊能力と防御修正はテキストボックスからフォーカスを外した時点で出力欄に反映。（数値入力後データを再読込する必要はありません<br>
-http://unonek.sakura.ne.jp/lh/gc_cp.html
-
+1.「攻撃使用技能」「攻撃使用判定値」「武器命中修正」「武器ダメージ」を入力<br>
+2.http://charasheet.vampire-blood.net/○○（英数字）←ここの○○を入力<br>
+3.「読み込む」を押す<br>
+4.テキストを全部コピーしてココフォリア上で「貼り付け」
 <br>
 <br>
+・部隊能力と防御修正は使用時のみテキストボックスからフォーカスを外した時点で出力欄に反映。<br>
+うのねさん作成の<a href="http://unonek.sakura.ne.jp/lh/gc_cp.html">チャットパレット生成</a>を改変させていただいています。
+</div>
 <br>
 
 </body>

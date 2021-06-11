@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/earlyaccess/notosansjapanese.css');
+
+h1 {
+    position: relative;
+    display: inline-block;
+    padding: 0 55px;
+    font-family: "Noto Sans Japanese";  /* フォントを指定 */
+    font-size: 30px;
+  }
+.container{
+
+}
