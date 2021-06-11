@@ -205,7 +205,8 @@
         for(var i = 0;i < GC.item_name.length;i++){
         var item_total = "・" + GC.item_name[i];
         if(GC.item_num[i] != ""){
-            item_total += "（" + GC.item_num[i] + "）";
+            item_total += "（" + GC.item_num[i] + "）\n"
+            item = item_total;
           }
         }
       }
@@ -263,7 +264,9 @@
     + GC.pc_name + 
     "\",\"initiative\": \""
     + GC.armer_total_act + 
-    "\",\"memo\": \"\",\"status\": [{\"label\": \"HP\",\"value\": \""
+    "\",\"memo\": \""
+    + item +
+    "\",\"status\": [{\"label\": \"HP\",\"value\": \""
     + GC.NP7 +
     "\",\"max\": \""
     + GC.NP7 +
