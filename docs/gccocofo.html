@@ -46,7 +46,7 @@
       evades = "●回避\\n";
       effect = "☆特技\\n";
       magic = "★魔法\\n";
-      item = "●持ち物\\n";
+      items = "●持ち物\\n";
       var efe_tim = [];
       var mgi_tim = [];
       var hit_param_name = ["","格闘", "重武器", "軽武器", "騎乗", "射撃", "霊感", "治療", "混沌知識", "意志", "聖印", "感性", "力技", "知覚"];
@@ -201,9 +201,10 @@
         }
         for(var i = 0;i < GC.item_name.length;i++){
         var item_total = "・" + GC.item_name[i];
-        if(GC.item_num[i] != ""){
-            item_total += "（" + GC.item_num[i] + "）";
+        if(GC.item_name[i] != ""){
+            item_total += "（" + GC.item_num[i] + "）\\n";
           }
+          items += item_total;
         }
       }
     
@@ -260,7 +261,9 @@
     + GC.pc_name + 
     "\",\"initiative\": \""
     + GC.armer_total_act + 
-    "\",\"memo\": \"\",\"status\": [{\"label\": \"HP\",\"value\": \""
+    "\",\"memo\": \""
+    + items +
+    "\",\"status\": [{\"label\": \"HP\",\"value\": \""
     + GC.NP7 +
     "\",\"max\": \""
     + GC.NP7 +
