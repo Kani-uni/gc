@@ -21,6 +21,9 @@ header{
 main{
   margin: 30 50;
 }
+button{
+  padding: 10;
+}
   .container{
     width: 100%;
     max-width: 960px;
