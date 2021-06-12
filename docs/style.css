@@ -7,6 +7,56 @@ h1 {
     font-family: "Noto Sans Japanese";  /* フォントを指定 */
     font-size: 30px;
   }
-.container{
+  h2{
+    font-size: 18px;
+    margin: 10 auto;
+  }
+img {
+  max-width: 100%; 
+}
 
+header{
+  text-align: center;
+}
+main{
+  margin: 30 50;
+}
+  .container{
+    width: 100%;
+    max-width: 960px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .top {
+    max-width: 100%; 
+    float: left;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .mainright > img {
+    max-width: 100%; 
+    margin-top: 60px;
+  }
+  .mainleft > img {
+    max-width: 100%; 
+  }
+
+  .menu{
+    display: inline-block;
+    margin: 40px auto;
+  }
+
+
+a:link { color: #000000; }
+a:visited { color: #2e2e2e; }
+a:hover { color: #626262; }
+a:active { color: #000000; }
+
+footer{
+  font-size: small;
+  clear: both;
+  width: 100%; 
+  display: block;
+  text-align: center;
 }

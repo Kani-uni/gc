@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>甲殻中枢派出所</title>
+    <title>グランクレストココフォリア出力ツール</title>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">google.load("jquery", "1.2");</script>
    <link rel="stylesheet" href="style.css">
@@ -406,45 +406,53 @@ function TextAreaSelect(){
 }
 </script>
 <div class="container">
-  <div class="header">
-    <h1>グラクレチャパレ（ココフォリアコピペ用）</h1>
-  </div>
-  <div>
-<form name = "box" id="box2" >
-キャラシID:<input type="text" name="c_url" id="C_URL" value="0" >&nbsp; <input type="button" name="go" value="読み込む"  onclick="tekiyou()"><br><br>
-攻撃使用技能:<select name="atk_skill" id="atk_skill" onchange="calcData();">
-  <option selected="selected" value="0"></option>
-  <option value="1">格闘</option>
-  <option value="12">力技</option>
-  <option value="2">重武器</option>
-  <option value="3">軽武器</option>
-  <option value="4">騎乗</option>
-  <option value="5">射撃</option>
-  <option value="13">知覚</option>
-  <option value="6">霊感</option>
-  <option value="7">治療</option>
-  <option value="8">混沌知識</option>
-  <option value="9">意志</option>
-  <option value="10">聖印</option>
-  <option value="11">感性</option>
-  </select>&nbsp;
-攻撃使用判定値:<select name="atk_hit_status" id="atk_hit_status" onchange="calcData();">
-  <option value="0">筋力</option>
-  <option value="1">反射</option>
-  <option value="2">感覚 </option>
-  <option value="3">知力</option>
-  <option value="4">精神</option>
-  <option value="5">共感</option>
-  </select>&nbsp;
-武器命中修正:<input type="text" style="width:30px;" id="ad_hit" onchange="calcData();" value="0" >&nbsp;
-武器ダメージ:<input type="text" style="width:30px;" id="ad_dmg" onchange="calcData();" value="0" >&nbsp;
-<br><br>
-出力欄<br>
-<textarea name="strbox" id="strbox" rows="20" cols="100" tabindex="0" wrap="hard">
-入力なし</textarea></form>
-<input type="button" value="テキスト全選択" onClick="TextAreaSelect()"></div>
-<br><br>
-<div>
+<div class="contents">
+  <header>
+      <img src="img/img4.jpg"> 
+    <h1>グランクレスト用ココフォリア出力ツール</h1>
+  </header>
+  <main>
+        <div class="form">
+        <form name = "box" id="box2" >
+            <h2>①http://charasheet.vampire-blood.net/○○（英数字）←ここの○○を入力</h2>
+            キャラシID:<input type="text" name="c_url" id="C_URL" value="0" >&nbsp; <br><br>
+            <h2>②「攻撃使用技能」「攻撃使用判定値」「武器命中修正」「武器ダメージ」を入力</h2>
+            攻撃使用技能:<select name="atk_skill" id="atk_skill" onchange="calcData();">
+            <option selected="selected" value="0"></option>
+            <option value="1">格闘</option>
+            <option value="12">力技</option>
+            <option value="2">重武器</option>
+            <option value="3">軽武器</option>
+            <option value="4">騎乗</option>
+            <option value="5">射撃</option>
+            <option value="13">知覚</option>
+            <option value="6">霊感</option>
+            <option value="7">治療</option>
+            <option value="8">混沌知識</option>
+            <option value="9">意志</option>
+            <option value="10">聖印</option>
+            <option value="11">感性</option>
+            </select>&nbsp;
+            攻撃使用判定値:<select name="atk_hit_status" id="atk_hit_status" onchange="calcData();">
+            <option value="0">筋力</option>
+            <option value="1">反射</option>
+            <option value="2">感覚 </option>
+            <option value="3">知力</option>
+            <option value="4">精神</option>
+            <option value="5">共感</option>
+            </select>&nbsp;
+            武器命中修正:<input type="text" style="width:30px;" id="ad_hit" onchange="calcData();" value="0" >&nbsp;
+            武器ダメージ:<input type="text" style="width:30px;" id="ad_dmg" onchange="calcData();" value="0" >&nbsp;
+            <br><br><button name="go" value="読み込む"  onclick="tekiyou()">読み込む</button>&nbsp;<br><br>
+            <h2>③全部コピー→ココフォリア上のマーカー・スクリーンがないところで右クリック→「貼り付け」（※）</h2>
+            <textarea name="strbox" id="strbox" rows="20" cols="100" tabindex="0" wrap="hard">
+            入力なし</textarea>
+        </form>
+        <input type="button" value="テキスト全選択" onClick="TextAreaSelect()">
+        </div>
+    <br><br>
+        <div>
+          ●部隊修正込みの数値を出したい場合は以下入力してください<br>
 部隊能力修正(0以外の時各被ダメ計算に+で追加)<br>
 筋力:<input type="text" style="width:30px;" id="ad_str" onchange="calcData();" value="0" >&nbsp;
 反射:<input type="text" style="width:30px;" id="ad_ref" onchange="calcData();" value="0" >&nbsp;
@@ -458,20 +466,15 @@ function TextAreaSelect(){
 炎熱:<input type="text" style="width:30px;" id="fir" onchange="calcData();" value="0" >&nbsp;
 衝撃:<input type="text" style="width:30px;" id="sho" onchange="calcData();" value="0" >&nbsp;
 体内:<input type="text" style="width:30px;" id="dir" onchange="calcData();" value="0" >&nbsp;
+        </div><br>※<br>
+    <img src="img/img1.jpg">
+    <br><br>
+    ・部隊能力と防御修正はテキストボックスからフォーカスを外した時点で出力欄に反映。<br>
+    うのねさん作成の<a href="http://unonek.sakura.ne.jp/lh/gc_cp.html">チャットパレット生成</a>を改変させていただいています。
+    <p><a href="index.html">＜top</a></p>
+    <img src="img/img5.png"> 
+    </main>
 </div>
-<br><br>
-○使い方<br>
-1.「攻撃使用技能」「攻撃使用判定値」「武器命中修正」「武器ダメージ」を入力<br>
-2.http://charasheet.vampire-blood.net/○○（英数字）←ここの○○を入力<br>
-3.「読み込む」を押す<br>
-4.テキストを全部コピーしてココフォリア上で「貼り付け」<br>
-※コマの「パラメータ」欄に入力する必要はありません
-<br>
-<br>
-・部隊能力と防御修正は使用時のみテキストボックスからフォーカスを外した時点で出力欄に反映。<br>
-うのねさん作成の<a href="http://unonek.sakura.ne.jp/lh/gc_cp.html">チャットパレット生成</a>を改変させていただいています。
 </div>
-<br>
-
 </body>
 </html>
