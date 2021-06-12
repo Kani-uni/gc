@@ -443,12 +443,12 @@ function TextAreaSelect(){
             </select>&nbsp;
             武器命中修正:<input type="text" style="width:30px;" id="ad_hit" onchange="calcData();" value="0" >&nbsp;
             武器ダメージ:<input type="text" style="width:30px;" id="ad_dmg" onchange="calcData();" value="0" >&nbsp;
-            <br><br><button name="go" value="読み込む"  onclick="tekiyou()">読み込む</button>&nbsp;<br><br>
+            <br><br><input type="button" name="go" value="読み込む"  onclick="tekiyou()">&nbsp;<br><br>
             <h2>③全部コピー→ココフォリア上のマーカー・スクリーンがないところで右クリック→「貼り付け」（※）</h2>
             <textarea name="strbox" id="strbox" rows="20" cols="100" tabindex="0" wrap="hard">
             入力なし</textarea>
         </form>
-        <button value="テキスト全選択" onClick="TextAreaSelect()">テキスト全選択</button>
+        <input type="button" value="テキスト全選択" onClick="TextAreaSelect()">
         </div>
     <br><br>
         <div>
