@@ -223,6 +223,7 @@
     var ad_hit = parseInt(document.getElementById('ad_hit').value);
     var atk_skill = parseInt(document.getElementById('atk_skill').value);
     var atk_hit_status = parseInt(document.getElementById('atk_hit_status').value);
+    var cs_url = parseInt(document.getElementById('C_URL').value);
     //ここまで
     var wep = parseInt(document.getElementById('wep').value);
     var fir = parseInt(document.getElementById('fir').value);
@@ -262,7 +263,9 @@
     + GC.pc_name + 
     "\",\"initiative\": "
     + GC.armer_total_act + 
-    ",\"memo\": \""
+    ",\"externalUrl\": \"https:\/\/charasheet.vampire-blood.net\/"
+    + cs_url + 
+    "\",\"memo\": \""
     + items +
     "\",\"status\": [{\"label\": \"HP\",\"value\": \""
     + GC.NP7 +
