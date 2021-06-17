@@ -11,6 +11,10 @@ h1 {
     font-size: 18px;
     margin: 10 auto;
   }
+  h6{
+    font-size: 12px;
+    margin: 10 auto;
+  }
 img {
   max-width: 100%; 
 }
