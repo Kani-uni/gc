@@ -34,6 +34,18 @@
     //var firstScript = document.getElementsByTagName( 'script' )[ 0 ];
     //firstScript.parentNode.insertBefore( script, firstScript );
     };
+    
+    function tekiyouLV(){
+    var CURL = document.getElementById('C_URL').value;
+    var URL = "https://charasheet.vampire-blood.net/" + CURL +".js?callback=jsonp3";
+    var script = document.createElement( 'script' );
+    script.type = 'text/javascript';
+    script.src = URL;
+    document.body.appendChild(script);
+    //script.onload=function(){tekiyou2()};
+    //var firstScript = document.getElementsByTagName( 'script' )[ 0 ];
+    //firstScript.parentNode.insertBefore( script, firstScript );
+    };
     var jsonp = function(data) {
       GC = data;
       calcData();
@@ -41,6 +53,10 @@
     var jsonp2 = function(data) {
       GC = data;
       calcData2();
+    }
+    var jsonp3 = function(data) {
+      GC = data;
+      calcData3();
     }
     var checkDuplicate = function(array, str){
       for(var i =0; i < array.length; i++){
@@ -225,6 +241,172 @@
         }
       }
     
+    function tekiyou3(){
+      acts = "●アクション\n";
+      evades = "●回避\n";
+      effect = "☆特技\n";
+      magic = "★魔法\n";
+      items = "●持ち物\n";
+      var efe_tim = [];
+      var mgi_tim = [];
+      var hit_param_name = ["","格闘", "重武器", "軽武器", "騎乗", "射撃", "霊感", "治療", "混沌知識", "意志", "聖印", "感性", "力技", "知覚"];
+      var eva_param_name = ["回避", "格闘", "重武器", "軽武器", "隠密", "騎乗", "射撃", "霊感", "治療", "混沌知識", "意志", "聖印", "感性", "知覚"];
+      var eva_param = ["{回避判定}", "{格闘判定}", "{重武器判定}", "{軽武器判定}", "{隠密判定}", "{騎乗判定}", "{射撃判定}", "{霊感判定}", "{治療判定}", "{混沌知識判定}", "{意志判定}", "{聖印判定}", "{感性判定}", "{知覚判定}"];  
+      for(var i = 0;i < GC.effect_timing.length;i++){
+        if( !checkDuplicate(efe_tim, GC.effect_timing[i]) ){
+          efe_tim.push(GC.effect_timing[i]);
+        }
+      }
+      for(var i = 0;i < GC.magic_timing.length;i++){
+        if( !checkDuplicate(mgi_tim, GC.magic_timing[i]) ){
+          mgi_tim.push(GC.magic_timing[i]);
+        }
+      }
+      for (var j = 0;j< efe_tim.length;j++){
+        if(efe_tim[j] != "") effect += "○" + efe_tim[j] + "\n";
+        for(var i = 0;i < GC.effect_name.length;i++){
+          if((GC.effect_name[i] == "")||(GC.effect_timing[i] != efe_tim[j])||(efe_tim[j] == "")){
+            continue;
+          }
+          var effect_total = "▼" + GC.effect_name[i] + "\_SL:" + GC.effect_lv[i];
+          if(GC.effect_timing[i] != ""){
+            effect_total += "\_タイミング:" + GC.effect_timing[i];
+          }
+          if(GC.effect_hantei[i] != ""){
+            effect_total += "\_判定:" + GC.effect_hantei[i];
+          }
+          if(GC.effect_taisho[i] != ""){
+            effect_total += "\_対象:" + GC.effect_taisho[i];
+          }
+          if(GC.effect_range[i] != ""){
+            effect_total += "\_射程:" + GC.effect_range[i];
+          }
+          if(GC.effect_cost[i] != ""){
+            effect_total += "\_コスト:" + GC.effect_cost[i];
+          }
+          if(GC.effect_mc[i] == ""){
+            effect_total += "\_MC：○";
+          }else if(GC.effect_mc[i] == "&times;"){
+            effect_total += "\_MC：×";
+          }else{
+            effect_total += "\_MC：" + GC.effect_mc[i];
+          }
+          if(GC.effect_memo[i] != ""){
+            effect_total += "\_効果:" + decode(GC.effect_memo[i]);
+          }
+          if(GC.effect_hantei[i] != ""){
+            effect_total +=  "\n{"  + GC.effect_hantei[i] + "判定}>=0　命中";
+          }
+          effect_total += "\n"
+          effect += effect_total;
+        }
+      }
+      for (var j = 0;j< mgi_tim.length;j++){
+        if(mgi_tim[j] != "") magic += "○" + mgi_tim[j] + "\n";
+        for(var i = 0;i < GC.magic_name.length;i++){
+          if((GC.magic_name[i] == "")||(GC.magic_timing[i] != mgi_tim[j])||(mgi_tim[j] == "")){
+            continue;
+          }
+          var magic_total = "▼" + GC.magic_name[i];
+          if(GC.magic_timing[i] != ""){
+            magic_total += "\_タイミング:" + GC.magic_timing[i];
+          }
+          if(GC.magic_hantei[i] != ""){
+            magic_total += "\_判定:" + GC.magic_hantei[i];
+          }
+          if(GC.magic_page[i] != ""){
+            magic_total += "\_目標:" + GC.magic_page[i];
+          }
+          if(GC.magic_taisho[i] != ""){
+            magic_total += "\_対象:" + GC.magic_taisho[i];
+          }
+          if(GC.magic_range[i] != ""){
+            magic_total += "\_射程:" + GC.magic_range[i];
+          }
+          if(GC.magic_cost[i] != ""){
+            magic_total += "\_コスト:" + GC.magic_cost[i];
+          }
+          if(GC.magic_limit[i] != ""){
+            magic_total += "\_制限:" + GC.magic_limit[i];
+          }
+          if(GC.magic_mc[i] == ""){
+            magic_total += "\_MC：○";
+          }else{
+            magic_total += "\_MC：" + GC.magic_mc[i];
+          }
+          if(GC.magic_memo[i] != ""){
+            magic_total += "\_効果:" + decode(GC.magic_memo[i]);
+          }
+          if(GC.magic_hantei[i] != ""){
+            magic_total += "\n{" + GC.magic_hantei[i] + "判定}>=" + GC.magic_page[i] + "  命中";
+          }
+          magic_total += "\n"
+          magic += magic_total;
+        }
+      }
+      for(var i = 0;i < GC.acts_name.length;i++){
+          if((GC.acts_name[i] == "")){
+            continue;
+          }
+          var acts_total = "▼" + GC.acts_name[i];
+          if(GC.acts_hit_param[i] != ""){
+            acts_total += "\_判定:" + hit_param_name[GC.acts_hit_param[i]];
+          }
+          if(GC.acts_range[i] != ""){
+            acts_total += "\_射程:" + GC.acts_range[i];
+          }
+          if(GC.acts_cost[i] != ""){
+            acts_total += "\_コスト:" + GC.acts_cost[i];
+          }
+          if(GC.acts_mc[i] == ""){
+            acts_total += "\_MC：○";
+          }else if(GC.acts_mc[i] == "&times;"){
+            acts_total += "\_MC：×";
+          }else{
+            acts_total += "\_MC：" + GC.acts_mc[i];
+          }
+          if(GC.acts_sonota[i] != ""){
+            acts_total += "\_効果:" + decode(GC.acts_sonota[i]);
+          }
+          acts_total += "\n" + GC.acts_hit[i] + "=>0　命中判定\n"
+          if(GC.acts_power[i] != ""){
+            acts_total += decode(GC.acts_power[i]) + "　攻撃";
+          }
+          acts_total += "\n"
+          acts += acts_total;
+        }
+        for(var i = 0;i < GC.evades_name.length;i++){
+          if((GC.evades_name[i] == "")){
+            continue;
+          }
+          var evades_total = "▼" + GC.evades_name[i];
+          if(GC.evades_hit_param[i] != ""){
+            evades_total += "\_判定:" + eva_param_name[GC.evades_hit_param[i]];
+          }
+          if(GC.evades_cost[i] != ""){
+            evades_total += "\_コスト:" + GC.evades_cost[i];
+          }
+          if(GC.evades_mc[i] == ""){
+            evades_total += "\_MC：○";
+          }else if(GC.evades_mc[i] == "&times;"){
+            evades_total += "\_MC：×";
+          }else{
+            evades_total += "\_MC：" + GC.evades_mc[i];
+          }
+          if(GC.evades_sonota[i] != ""){
+            evades_total += "\_効果:" + decode(GC.evades_sonota[i]);
+          }
+          evades_total += "\n" + GC.evades_hit[i] + "=>0　回避判定\n"
+          evades += evades_total;
+        }
+        for(var i = 0;i < GC.item_name.length;i++){
+        var item_total = "・" + GC.item_name[i];
+        if(GC.item_name[i] != ""){
+            item_total += "（" + GC.item_num[i] + "）\n";
+          }
+          items += item_total;
+        }
+      }
 
   function calcData(){
     tekiyou2();
@@ -419,6 +601,7 @@ magic + "\\n\\n" +
       skill_total[i] = "";
     };
   };
+  //簡易版
   function calcData2(){
     tekiyou2();
     //追加分
@@ -550,7 +733,170 @@ magic + "\\n\\n" +
 "{芸術判定}=>0 芸術判定\"}}";
   document.box.strbox.value = outdata2;
   };
-function TextAreaSelect(){
+  //レベルアップ分
+  function calcData3(){
+    tekiyou3();
+    var ad_str = parseInt(document.getElementById('ad_str').value);
+    var ad_ref = parseInt(document.getElementById('ad_ref').value);
+    var ad_sen = parseInt(document.getElementById('ad_sen').value);
+    var ad_int = parseInt(document.getElementById('ad_int').value);
+    var ad_spi = parseInt(document.getElementById('ad_spi').value);
+    var ad_emp = parseInt(document.getElementById('ad_emp').value);
+    //追加分
+    var ad_dmg = parseInt(document.getElementById('ad_dmg').value);
+    var ad_hit = parseInt(document.getElementById('ad_hit').value);
+    var atk_skill = parseInt(document.getElementById('atk_skill').value);
+    var atk_hit_status = parseInt(document.getElementById('atk_hit_status').value);
+    var cs_url = parseInt(document.getElementById('C_URL').value);
+    //ここまで
+    var wep = parseInt(document.getElementById('wep').value);
+    var fir = parseInt(document.getElementById('fir').value);
+    var sho = parseInt(document.getElementById('sho').value);
+    var dir = parseInt(document.getElementById('dir').value);
+    skill_total = [];
+    for (var i = 0; i < GC.skill_total.length; i++) {
+      skill_total[i] = GC.skill_total[i];
+    };
+    for(var i =0; i < 5; i++){
+      if(ad_str != 0) skill_total[i] = GC.skill_total[i];// + "+" + ad_str;
+      if(ad_ref != 0) skill_total[i+5] = GC.skill_total[i+5];// + "+" + ad_ref;
+      //if(ad_sen != 0) GC.skill_total[i+10] += "+" + ad_sen;
+      if(ad_int != 0) skill_total[i+14] = GC.skill_total[i+14];// + "+" + ad_int;
+      //if(ad_spi != 0) GC.skill_total[i] += "+" + ad_spi;
+    }
+    for(var i =0; i < 4; i++){
+      if(ad_sen != 0) skill_total[i+10] = GC.skill_total[i+10];// + "+" + ad_sen;
+      if(ad_emp != 0) skill_total[i+21] = GC.skill_total[i+21];// + "+" + ad_emp;
+    }
+    if(ad_spi != 0) {
+      skill_total[19] = GC.skill_total[19];// + "+" + ad_spi;
+      skill_total[20] = GC.skill_total[20];// + "+" + ad_spi;
+    }
+    var add_str = (ad_str != 0) ? "+" + ad_str : "";
+    var add_ref = (ad_ref != 0) ? "+" + ad_ref : "";
+    var add_int = (ad_int != 0) ? "+" + ad_int : "";
+    var add_sen = (ad_sen != 0) ? "+" + ad_sen : "";
+    var add_emp = (ad_emp != 0) ? "+" + ad_emp : "";
+    var add_spi = (ad_spi != 0) ? "+" + ad_spi : "";
+    //追加分
+    var add_dmg = (ad_dmg != 0) ? + ad_dmg : "";
+    var add_hit = (ad_hit != 0) ? + ad_hit : "";
+
+    var outdata =
+    "行動値→" + GC.armer_total_act + 
+    "\n最大HP→"+ GC.NP7 +
+    "\n最大MP→"+ GC.NP8 + 
+    "\n\n●筋力上昇時変更\n格闘判定："
+    + skill_total[0] +
+    "\n力技判定："
+    + skill_total[1] +
+    "\n重武器判定："
+    + skill_total[2] +
+    "\n水泳判定："
+    + skill_total[3] +
+    "\n頑健判定："
+    + skill_total[4] +
+    "\n\n●反射上昇時変更\n軽武器判定："
+    + skill_total[5] +
+    "\n運動判定："
+    + skill_total[6] +
+    "\n隠密判定："
+    +skill_total[7] +
+    "\n回避判定："
+    + skill_total[8] +
+    "\n騎乗判定："
+    + skill_total[9] +
+    "\n\n●感覚上昇時変更\n射撃判定："
+    + skill_total[10] +
+    "\n手業判定："
+    + skill_total[11] +
+    "\n知覚判定："
+    + skill_total[12] +
+    "\n霊感判定："
+    + skill_total[13] +
+    "\n\n●知力上昇時変更\n治療判定："
+    + skill_total[14] +
+    "\n混沌知識判定："
+    + skill_total[15] +
+    "\n聖印知識判定："
+    + skill_total[16] +
+    "\n軍略知識判定："
+    + skill_total[17] +
+    "\n専門知識判定："
+    + skill_total[18] +
+    "\n\n●精神上昇時変更\n意志判定："
+    + skill_total[19] +
+    "\n聖印判定："
+    + skill_total[20] +
+    "\n\n●共感上昇時変更\n話術判定："
+    + skill_total[21] +
+    "\n感性判定："
+    + skill_total[22] +
+    "\n情報収集判定："
+    + skill_total[23] +
+    "\n芸術判定："
+    + skill_total[24] +
+    "\n\n●特技・魔法一覧\n" +
+    acts + "\n\n" +
+    evades + "\n\n" +
+    effect + "\n\n" +
+    magic + "\n\n" +
+    "●部隊修正\n{格闘判定}" + add_str + "=>0 格闘判定\n" +
+    "{力技判定}" + add_str + "=>0 力技判定\n" +
+    "{重武器判定}" + add_str + "=>0 重武器判定\n" +
+    "{水泳判定}" + add_str + "=>0 水泳判定\n" +
+    "{頑健判定}" + add_str + "=>0 頑健判定\n" +
+    "{軽武器判定}" + add_ref + "=>0 軽武器判定\n" +
+    "{運動判定}" + add_ref + "=>0 運動判定\n" +
+    "{隠密判定}" + add_ref + "=>0 隠密判定\n" +
+    "{回避判定}" + add_ref + "=>0 回避判定\n" +
+    "{騎乗判定}" + add_ref + "=>0 騎乗判定\n" +
+    "{射撃判定}" + add_sen + "=>0 射撃判定\n" +
+    "{手業判定}" + add_sen + "=>0 手業判定\n" +
+    "{知覚判定}" + add_sen + "=>0 知覚判定\n" +
+    "{霊感判定}" + add_sen + "=>0 霊感判定\n" +
+    "{治療判定}" + add_int + "=>0 治療判定\n" +
+    "{混沌知識判定}" + add_int + "=>0 混沌知識判定\n" +
+    "{聖印知識判定}" + add_int + "=>0 聖印知識判定\n" +
+    "{軍略知識判定}" + add_int + "=>0 軍略知識判定\n" +
+    "{専門知識判定}" + add_int + "=>0 専門知識判定\n" +
+    "{意志判定}" + add_spi + "=>0 意志判定\n" +
+    "{聖印判定}" + add_spi + "=>0 聖印判定\n" +
+    "{話術判定}" + add_emp + "=>0 話術判定\n" +
+    "{感性判定}" + add_emp + "=>0 感性判定\n" +
+    "{情報収集判定}" + add_emp + "=>0 情報収集判定\n" +
+    "{芸術判定}" + add_emp + "=>0 芸術判定\n" + "\n" + "\n" +
+
+    "●ステータス、防御力など\n//武器=" + GC.armer_total_defA + "\n" +
+    "//炎熱=" + GC.armer_total_defB + "\n" +
+    "//衝撃=" + GC.armer_total_defC + "\n" +
+    "//体内=" + GC.armer_total_defD + "\n" +
+    "//【筋力】=" + GC.NB1 + "\n" +
+    "//【反射】=" + GC.NB2 + "\n" +
+    "//【感覚】=" + GC.NB3 + "\n" +
+    "//【知力】=" + GC.NB4 + "\n" +
+    "//【精神】=" + GC.NB5 + "\n" +
+    "//【共感】=" + GC.NB6 + "\n" +
+    "//【筋力基本値】=" + GC.NP1 + "\n" +
+    "//【反射基本値】=" + GC.NP2 + "\n" +
+    "//【感覚基本値】=" + GC.NP3 + "\n" +
+    "//【知力基本値】=" + GC.NP4 + "\n" +
+    "//【精神基本値】=" + GC.NP5 + "\n" +
+    "//【共感基本値】=" + GC.NP6 + "\n" +
+    "//ガード値=" + GC.guard_level_sum + "\n" +"\n" +
+  
+    "●装備関連変更時\n//装備回避補正値=" + GC.armer_total_dodge + "\n" +
+    "//武器重量="  + GC.arms_price_sum + "\n" +
+    "//武器命中修正=" + add_hit + "\n" +
+    "//武器ダメージ=" + add_dmg ;
+  document.box.strbox.value = outdata;
+  effect = "";
+  magic = "";
+  for (var i = 0; i < GC.skill_total.length; i++) {
+      skill_total[i] = "";
+    };
+  };
+  function TextAreaSelect(){
 	document.box.strbox.focus();
 	document.box.strbox.select();
 }
@@ -595,8 +941,10 @@ function TextAreaSelect(){
             武器命中修正:<input type="text" style="width:30px;" id="ad_hit" onchange="calcData();" value="0" >&nbsp;
             武器ダメージ:<input type="text" style="width:30px;" id="ad_dmg" onchange="calcData();" value="0" >&nbsp;
             <br><br><input type="button" name="go" value="フル版出力"  onclick="tekiyou()">&nbsp;
-            <input type="button" name="go" value="簡易版出力"  onclick="tekiyouK()"><br><br>
+            <input type="button" name="go" value="簡易版出力"  onclick="tekiyouK()">&nbsp;
+            <input type="button" name="go" value="レベルアップ出力"  onclick="tekiyouLV()"><br><br>
             <h2>③全部コピー→ココフォリア上のマーカー・スクリーンがないところで右クリック→「貼り付け」（※）</h2>
+            <h6>レベルアップ出力時は必要部分を適宜修正に使用してください</h6>            
             <textarea name="strbox" id="strbox" rows="20" cols="100" tabindex="0" wrap="hard">
             入力なし</textarea>
         </form>
