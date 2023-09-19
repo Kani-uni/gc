@@ -15,6 +15,10 @@
 
 <h1>JSON Editor</h1>
 
+<h2>Enter the ID to Fetch JSON</h2>
+<input type="text" id="jsonID" placeholder="Enter ID">
+<button onclick="fetchJSON()">Fetch JSON</button>
+
 <h2>JSON Display Area</h2>
 <pre id="jsonDisplay"></pre>
 
@@ -23,30 +27,38 @@
 <button onclick="updateJSON()">Update JSON</button>
 
 <script>
-    let sampleJSON = {
-        // ここにサンプルのJSON情報を記述
-        "is_disp_status":"1",
-        "level":"3",
-        // ... (その他の情報を続けて記述)
-    };
+    function displayJSON(jsonData) {
+        document.getElementById("jsonDisplay").textContent = JSON.stringify(jsonData, null, 4);
+        document.getElementById("jsonEditor").value = JSON.stringify(jsonData, null, 4);
+    }
 
-    function displayJSON() {
-        document.getElementById("jsonDisplay").textContent = JSON.stringify(sampleJSON, null, 4);
+    function fetchJSON() {
+        const id = document.getElementById("jsonID").value;
+        const url = `https://charasheet.vampire-blood.net/${id}.js`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayJSON(data);
+            })
+            .catch(error => {
+                console.log('There was a problem with the fetch operation:', error.message);
+                alert("Failed to fetch JSON. Check the console for details.");
+            });
     }
 
     function updateJSON() {
         try {
             let updatedJSON = JSON.parse(document.getElementById("jsonEditor").value);
-            sampleJSON = updatedJSON;
-            displayJSON();
+            displayJSON(updatedJSON);
         } catch(e) {
             alert("Invalid JSON Format");
         }
-    }
-
-    window.onload = function() {
-        displayJSON();
-        document.getElementById("jsonEditor").value = JSON.stringify(sampleJSON, null, 4);
     }
 </script>
 
