@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Editor</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>JSON Editor</h1>
+
+<h2>JSON Display Area</h2>
+<pre id="jsonDisplay"></pre>
+
+<h2>JSON Editor</h2>
+<textarea id="jsonEditor"></textarea>
+<button onclick="updateJSON()">Update JSON</button>
+
+<script>
+    let sampleJSON = {
+        // ここにサンプルのJSON情報を記述
+        "is_disp_status":"1",
+        "level":"3",
+        // ... (その他の情報を続けて記述)
+    };
+
+    function displayJSON() {
+        document.getElementById("jsonDisplay").textContent = JSON.stringify(sampleJSON, null, 4);
+    }
+
+    function updateJSON() {
+        try {
+            let updatedJSON = JSON.parse(document.getElementById("jsonEditor").value);
+            sampleJSON = updatedJSON;
+            displayJSON();
+        } catch(e) {
+            alert("Invalid JSON Format");
+        }
+    }
+
+    window.onload = function() {
+        displayJSON();
+        document.getElementById("jsonEditor").value = JSON.stringify(sampleJSON, null, 4);
+    }
+</script>
+
+</body>
+</html>
